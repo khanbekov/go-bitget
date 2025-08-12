@@ -1,0 +1,42 @@
+{
+  "bitget": {
+    "api_key": "your_api_key_here",
+    "secret_key": "your_secret_key_here", 
+    "passphrase": "your_passphrase_here",
+    "base_url": "https://api.bitget.com",
+    "is_testnet": false,
+    "timeout_seconds": 30
+  },
+  "trading": {
+    "symbols": ["BTCUSDT", "ETHUSDT", "ADAUSDT"],
+    "product_type": "USDT-FUTURES",
+    "margin_coin": "USDT",
+    "default_size": "0.001",
+    "max_positions": 3,
+    "position_timeout_hours": 24,
+    "take_profit_pct": 0.02,
+    "stop_loss_pct": 0.01,
+    "entry_threshold_pct": 0.005
+  },
+  "risk": {
+    "max_daily_loss_pct": 0.05,
+    "max_drawdown_pct": 0.15,
+    "max_portfolio_risk_pct": 0.25,
+    "min_balance_usdt": 100.0,
+    "enable_circuit_breaker": true,
+    "max_consecutive_losses": 5,
+    "cooldown_period_minutes": 60
+  },
+  "app": {
+    "log_level": "info",
+    "log_format": "text",
+    "log_file": "logs/trading.log",
+    "update_interval_seconds": 30,
+    "data_retention_days": 30,
+    "enable_metrics": false,
+    "metrics_port": 8080,
+    "health_check_port": 8081,
+    "database_path": "./data",
+    "backup_interval_hours": 24
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "bitget": {
+    "api_key": "your_testnet_api_key_here",
+    "secret_key": "your_testnet_secret_key_here",
+    "passphrase": "your_testnet_passphrase_here", 
+    "base_url": "https://testnet.bitget.com",
+    "is_testnet": true,
+    "timeout_seconds": 30
+  },
+  "trading": {
+    "symbols": ["BTCUSDT"],
+    "product_type": "USDT-FUTURES", 
+    "margin_coin": "USDT",
+    "default_size": "0.01",
+    "max_positions": 1,
+    "position_timeout_hours": 1,
+    "take_profit_pct": 0.05,
+    "stop_loss_pct": 0.02,
+    "entry_threshold_pct": 0.01
+  },
+  "risk": {
+    "max_daily_loss_pct": 0.20,
+    "max_drawdown_pct": 0.30,
+    "max_portfolio_risk_pct": 0.50,
+    "min_balance_usdt": 10.0,
+    "enable_circuit_breaker": false,
+    "max_consecutive_losses": 10,
+    "cooldown_period_minutes": 30
+  },
+  "app": {
+    "log_level": "debug",
+    "log_format": "text", 
+    "log_file": "logs/trading-testnet.log",
+    "update_interval_seconds": 10,
+    "data_retention_days": 7,
+    "enable_metrics": true,
+    "metrics_port": 8080,
+    "health_check_port": 8081,
+    "database_path": "./testnet-data",
+    "backup_interval_hours": 6
+  }
+}

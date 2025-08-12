@@ -1,0 +1,166 @@
+<DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitget Go SDK Documentation</title>
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #dee2e6;
+            --success-color: #28a745;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary-color), #004499);
+            color: white;
+            border-radius: 10px;
+        }
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--success-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0 5px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        .feature-card {
+            background: var(--secondary-color);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .doc-link {
+            display: block;
+            padding: 20px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        .doc-link:hover {
+            border-color: var(--primary-color);
+        }
+        .doc-link h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Bitget Go SDK</h1>
+        <p>Production-ready Go SDK for Bitget cryptocurrency exchange</p>
+        <div style="margin-top: 20px;">
+            <span class="badge">Go 1.23.4+</span>
+            <span class="badge">37+ Services</span>
+            <span class="badge">WebSocket Real-time</span>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <h3>Futures API</h3>
+            <p>Complete futures trading with 37+ services organized into 4 directories.</p>
+        </div>
+        <div class="feature-card">
+            <h3>UTA API (Recommended)</h3>
+            <p>Unified Trading Account API with auto-detection of demo mode.</p>
+        </div>
+        <div class="feature-card">
+            <h3>WebSocket (Unified)</h3>
+            <p>Production-ready WebSocket with rate limiting and auto-reconnection.</p>
+        </div>
+    </div>
+
+    <h2 style="text-align: center; margin: 50px 0 30px 0; color: var^(--primary-color^);">Documentation</h2>
+
+    <div class="docs-grid">
+        <a href="API_REFERENCE.md" class="doc-link">
+            <h4>API Reference</h4>
+            <p>Comprehensive API documentation for all packages.</p>
+        </a>
+        <a href="EXAMPLES.md" class="doc-link">
+            <h4>Examples</h4>
+            <p>Practical usage examples and code snippets.</p>
+        </a>
+        <a href="DEVELOPMENT.md" class="doc-link">
+            <h4>Development Guide</h4>
+            <p>Development setup and contribution guidelines.</p>
+        </a>
+        <a href="../README.md" class="doc-link">
+            <h4>Main README</h4>
+            <p>Project overview and getting started guide.</p>
+        </a>
+
+        <a href="../CLAUDE.md" class="doc-link">
+            <h4>Claude Guide</h4>
+            <p>Comprehensive guidance for Claude Code development.</p>
+        </a>
+
+        <a href="../CONTRIBUTING.md" class="doc-link">
+            <h4>Contributing</h4>
+            <p>Guidelines for contributing to the project.</p>
+        </a>
+
+        <a href="../LICENSE" class="doc-link">
+            <h4>License</h4>
+            <p>MIT License - Open source licensing terms.</p>
+        </a>
+
+        <a href="../examples/" class="doc-link">
+            <h4>Code Examples</h4>
+            <p>Working code examples and demo applications.</p>
+        </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px;">
+        <h3>Live Documentation</h3>
+        <pre><code>godoc -http=:6060</code></pre>
+        <p>Visit: <a href="http://localhost:6060/pkg/github.com/khanbekov/go-bitget/">http://localhost:6060/pkg/github.com/khanbekov/go-bitget/</a></p>
+    </div>
+</body>
+</html>
