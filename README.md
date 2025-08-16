@@ -354,10 +354,36 @@ go tool cover -html=coverage.out
 ```
 
 ### Test Structure
-- Unit tests for all services and utilities
-- Mock clients for testing without API calls
-- Integration-style tests for end-to-end workflows
-- WebSocket channel subscription and management tests
+- **Unit Tests**: All services and utilities with mock clients
+- **Integration Tests**: Real API testing with your own credentials
+- **WebSocket Tests**: Channel subscription and management tests
+- **End-to-End Tests**: Complete workflow validation
+
+### Integration Testing (Real API)
+
+Test against real Bitget API endpoints with your own credentials:
+
+```bash
+# Setup
+cp tests/configs/integration.example.json tests/configs/integration.json
+# Edit with your API keys and enable demo trading
+
+# Run integration tests
+tests/scripts/run-integration-tests.sh                    # Unix/Linux/macOS
+tests/scripts/run-integration-tests.bat                   # Windows
+
+# Direct testing
+go test -tags=integration ./tests/integration/suites -v
+```
+
+**Features**:
+- ✅ **Safe Testing**: Demo trading mode and read-only operations
+- ✅ **Comprehensive Coverage**: All account, market, and position endpoints
+- ✅ **Detailed Reports**: JSON and HTML test reports with metrics
+- ✅ **Selective Testing**: Enable/disable specific endpoints
+- ✅ **Error Recovery**: Built-in retry logic and error handling
+
+For detailed integration testing guide, see [`tests/INTEGRATION_TESTING.md`](tests/INTEGRATION_TESTING.md).
 
 ## Examples and Use Cases
 
@@ -463,7 +489,7 @@ Utility dependencies:
 
 ### Getting Help
 - 📖 Check the package documentation and [examples](examples/)
-- 📋 Read the [CLAUDE.md](CLAUDE.md) for comprehensive development guidance
+- 📋 Read the [Development Guide](docs/DEVELOPMENT.md) for comprehensive development guidance
 - 🐛 Report issues on [GitHub Issues](https://github.com/khanbekov/go-bitget/issues)
 - 💬 Join discussions in [GitHub Discussions](https://github.com/khanbekov/go-bitget/discussions)
 
