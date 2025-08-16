@@ -36,7 +36,6 @@ go.work.sum
 
 # AI files
 .claude/*
-CLAUDE.md
 
 .github/copilot/
 *.copilot
@@ -78,3 +77,17 @@ keys.json
 # Generated documentation (optional - comment out if you want to keep them)
 # docs/*.txt
 # docs/*.html
+
+# Vendor directories (Go modules make this unnecessary)
+vendor/
+vendor*
+
+# Integration test reports
+tests/reports/
+integration_report*.json
+integration_report*.html
+
+# Local test configurations  
+tests/configs/integration.json
+
+# other files
