@@ -39,8 +39,8 @@ type SetPositionModeResponse struct {
 func (s *SetPositionModeService) Do(ctx context.Context) (*SetPositionModeResponse, error) {
 	// Build request body
 	params := map[string]interface{}{
-		"productType":  string(s.productType),
-		"positionMode": string(s.positionMode),
+		"productType": string(s.productType),
+		"posMode":     string(s.positionMode),
 	}
 
 	body, err := json.Marshal(params)
