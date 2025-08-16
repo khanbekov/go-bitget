@@ -13,9 +13,6 @@ app.exe
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
 # Go workspace file
 go.work
 go.work.sum
@@ -89,5 +86,8 @@ integration_report*.html
 
 # Local test configurations  
 tests/configs/integration.json
+
+# main.go is unnecessary in libraries
+main.go
 
 # other files
