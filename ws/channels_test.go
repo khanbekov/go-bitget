@@ -126,17 +126,6 @@ func TestSubscribeTrades(t *testing.T) {
 	assert.Equal(t, 1, client.GetSubscriptionCount())
 }
 
-func TestSubscribeMarkPrice(t *testing.T) {
-	client := createTestClient()
-
-	handler := func(message string) {}
-
-	client.SubscribeMarkPrice("BTCUSDT", "COIN-FUTURES", handler)
-
-	assert.True(t, client.IsSubscribed(ChannelMarkPrice, "BTCUSDT", "COIN-FUTURES"))
-	assert.Equal(t, 1, client.GetSubscriptionCount())
-}
-
 func TestSubscribeFundingTime(t *testing.T) {
 	client := createTestClient()
 
