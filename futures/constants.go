@@ -94,7 +94,7 @@ const (
 type PositionModeType string
 
 const (
-	PositionModeOneWay PositionModeType = "one_way"
+	PositionModeOneWay PositionModeType = "one_way_mode"
 	PositionModeHedge  PositionModeType = "hedge"
 )
 
