@@ -866,11 +866,6 @@ func main() {
                 <p>Project overview, installation, and getting started guide.</p>
             </a>
 
-            <a href="../CLAUDE.md" class="doc-link">
-                <h4>Claude Guide</h4>
-                <p>Comprehensive guidance for Claude Code development.</p>
-            </a>
-
             <a href="../CONTRIBUTING.md" class="doc-link">
                 <h4>Contributing</h4>
                 <p>Guidelines for contributing to the project.</p>

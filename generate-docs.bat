@@ -210,7 +210,6 @@ echo go test -cover ./...
 echo go test -race ./...
 echo ```
 echo.
-echo For detailed development information, see CLAUDE.md.
 ) > docs/DEVELOPMENT.md
 
 echo Updating HTML index with modern content...
@@ -353,11 +352,6 @@ echo         ^</a^>
 echo         ^<a href="../README.md" class="doc-link"^>
 echo             ^<h4^>Main README^</h4^>
 echo             ^<p^>Project overview and getting started guide.^</p^>
-echo         ^</a^>
-echo.
-echo         ^<a href="../CLAUDE.md" class="doc-link"^>
-echo             ^<h4^>Claude Guide^</h4^>
-echo             ^<p^>Comprehensive guidance for Claude Code development.^</p^>
 echo         ^</a^>
 echo.
 echo         ^<a href="../CONTRIBUTING.md" class="doc-link"^>

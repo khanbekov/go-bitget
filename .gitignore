@@ -13,9 +13,6 @@ app.exe
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
 # Go workspace file
 go.work
 go.work.sum
@@ -36,7 +33,6 @@ go.work.sum
 
 # AI files
 .claude/*
-CLAUDE.md
 
 .github/copilot/
 *.copilot
@@ -78,3 +74,20 @@ keys.json
 # Generated documentation (optional - comment out if you want to keep them)
 # docs/*.txt
 # docs/*.html
+
+# Vendor directories (Go modules make this unnecessary)
+vendor/
+vendor*
+
+# Integration test reports
+tests/reports/
+integration_report*.json
+integration_report*.html
+
+# Local test configurations  
+tests/configs/integration.json
+
+# main.go is unnecessary in libraries
+main.go
+
+# other files

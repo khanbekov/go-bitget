@@ -1,0 +1,36 @@
+{
+  "api_key": "",
+  "secret_key": "",
+  "passphrase": "",
+  "use_testnet": true,
+  "base_url": "https://api.bitget.com",
+  "websocket_url": "wss://ws.bitget.com/v2/ws/public",
+  "demo_trading": true,
+  "test_timeout_seconds": 30,
+  "max_retries": 3,
+  "retry_delay_ms": 1000,
+  "enabled_suites": ["account", "market", "position"],
+  "endpoint_tests": {
+    "account_info": true,
+    "account_list": true,
+    "account_bills": true,
+    "set_leverage": false,
+    "adjust_margin": false,
+    "set_margin_mode": false,
+    "set_position_mode": false
+  },
+  "test_parameters": {
+    "limit": "10",
+    "granularity": "1m",
+    "coin": "USDT"
+  },
+  "test_symbol": "BTCUSDT",
+  "test_product_type": "USDT-FUTURES",
+  "test_coin": "USDT",
+  "safe_order_size": "0.001",
+  "safe_price_offset": "0.3",
+  "max_test_amount": "10",
+  "generate_report": true,
+  "report_path": "tests/reports/integration_report.json",
+  "log_level": "info"
+}

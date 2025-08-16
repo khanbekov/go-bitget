@@ -16,6 +16,7 @@ type SetMarginModeService struct {
 	symbol      string
 	productType futures.ProductType
 	marginMode  futures.MarginModeType
+	marginCoin  string
 }
 
 // Symbol sets the trading symbol for which to set the margin mode (e.g., "BTCUSDT").
@@ -27,6 +28,12 @@ func (s *SetMarginModeService) Symbol(symbol string) *SetMarginModeService {
 // ProductType sets the product type for the margin mode setting.
 func (s *SetMarginModeService) ProductType(productType futures.ProductType) *SetMarginModeService {
 	s.productType = productType
+	return s
+}
+
+// MarginCoin sets the margin coin for the adjustment.
+func (s *SetMarginModeService) MarginCoin(marginCoin string) *SetMarginModeService {
+	s.marginCoin = marginCoin
 	return s
 }
 
@@ -50,6 +57,7 @@ func (s *SetMarginModeService) Do(ctx context.Context) (*SetMarginModeResponse, 
 		"symbol":      s.symbol,
 		"productType": string(s.productType),
 		"marginMode":  string(s.marginMode),
+		"marginCoin":  s.marginCoin,
 	}
 
 	body, err := json.Marshal(params)
