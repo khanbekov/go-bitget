@@ -27,7 +27,8 @@ type WebSocketMessage struct {
 type SubscriptionArgs struct {
 	ProductType string `json:"instType"`
 	Channel     string `json:"channel"`
-	Symbol      string `json:"instId"`
+	Symbol      string `json:"instId,omitempty"`
+	Coin        string `json:"coin,omitempty"`
 }
 
 // SubscriptionRequest represents a WebSocket subscription request

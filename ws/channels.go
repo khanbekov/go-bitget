@@ -185,7 +185,7 @@ func (c *BaseWsClient) SubscribeTrades(symbol, productType string, handler OnRec
 	args := SubscriptionArgs{
 		ProductType: productType,
 		Channel:     ChannelTrade,
-		Symbol:      symbol,
+		Symbol:      "default",
 	}
 
 	c.subscriptions[args] = handler
@@ -210,7 +210,7 @@ func (c *BaseWsClient) SubscribeMarkPrice(symbol, productType string, handler On
 	// Mark price data is available through the ticker channel
 	args := SubscriptionArgs{
 		ProductType: productType,
-		Channel:     ChannelTicker, // Use ticker channel instead of non-existent mark-price channel
+		Channel:     ChannelTicker,
 		Symbol:      symbol,
 	}
 
@@ -378,7 +378,6 @@ func (c *BaseWsClient) SubscribeOrders(productType string, handler OnReceive) {
 	args := SubscriptionArgs{
 		ProductType: productType,
 		Channel:     ChannelOrders,
-		Symbol:      "", // Private channels don't use symbol
 	}
 
 	c.subscriptions[args] = handler
@@ -398,11 +397,11 @@ func (c *BaseWsClient) SubscribeOrders(productType string, handler OnReceive) {
 //	client.SubscribeFills("USDT-FUTURES", func(message string) {
 //	    fmt.Println("Fill update:", message)
 //	})
-func (c *BaseWsClient) SubscribeFills(productType string, handler OnReceive) {
+func (c *BaseWsClient) SubscribeFills(symbol string, productType string, handler OnReceive) {
 	args := SubscriptionArgs{
 		ProductType: productType,
 		Channel:     ChannelFill,
-		Symbol:      "", // Private channels don't use symbol
+		Symbol:      symbol,
 	}
 
 	c.subscriptions[args] = handler
@@ -426,7 +425,7 @@ func (c *BaseWsClient) SubscribePositions(productType string, handler OnReceive)
 	args := SubscriptionArgs{
 		ProductType: productType,
 		Channel:     ChannelPositions,
-		Symbol:      "", // Private channels don't use symbol
+		Symbol:      "default",
 	}
 
 	c.subscriptions[args] = handler
@@ -446,11 +445,11 @@ func (c *BaseWsClient) SubscribePositions(productType string, handler OnReceive)
 //	client.SubscribeAccount("USDT-FUTURES", func(message string) {
 //	    fmt.Println("Account update:", message)
 //	})
-func (c *BaseWsClient) SubscribeAccount(productType string, handler OnReceive) {
+func (c *BaseWsClient) SubscribeAccount(coin string, productType string, handler OnReceive) {
 	args := SubscriptionArgs{
 		ProductType: productType,
 		Channel:     ChannelAccount,
-		Symbol:      "", // Private channels don't use symbol
+		Coin:        coin,
 	}
 
 	c.subscriptions[args] = handler
@@ -474,7 +473,6 @@ func (c *BaseWsClient) SubscribePlanOrders(productType string, handler OnReceive
 	args := SubscriptionArgs{
 		ProductType: productType,
 		Channel:     ChannelPlanOrder,
-		Symbol:      "", // Private channels don't use symbol
 	}
 
 	c.subscriptions[args] = handler

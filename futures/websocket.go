@@ -23,11 +23,11 @@ type WebSocketClientInterface interface {
 	IsConnected() bool
 	IsLoggedIn() bool
 	Close()
-	
+
 	// Configuration methods
 	SetReconnectionTimeout(timeout time.Duration)
 	SetCheckConnectionInterval(interval time.Duration)
-	
+
 	// Public channel subscriptions
 	SubscribeTicker(symbol, productType string, handler ws.OnReceive)
 	SubscribeCandles(symbol, productType, timeframe string, handler ws.OnReceive)
@@ -37,13 +37,13 @@ type WebSocketClientInterface interface {
 	SubscribeTrades(symbol, productType string, handler ws.OnReceive)
 	SubscribeMarkPrice(symbol, productType string, handler ws.OnReceive)
 	SubscribeFundingTime(symbol, productType string, handler ws.OnReceive)
-	
+
 	// Private channel subscriptions
 	SubscribeOrders(productType string, handler ws.OnReceive)
-	SubscribeFills(productType string, handler ws.OnReceive)
+	SubscribeFills(string, productType string, handler ws.OnReceive)
 	SubscribePositions(productType string, handler ws.OnReceive)
-	SubscribeAccount(productType string, handler ws.OnReceive)
-	
+	SubscribeAccount(string, productType string, handler ws.OnReceive)
+
 	// Utility methods
 	GetSubscriptionCount() int
 }
@@ -133,16 +133,16 @@ func (w *WebSocketClientAdapter) SubscribeOrders(productType string, handler ws.
 	w.BaseWsClient.SubscribeOrders(productType, handler)
 }
 
-func (w *WebSocketClientAdapter) SubscribeFills(productType string, handler ws.OnReceive) {
-	w.BaseWsClient.SubscribeFills(productType, handler)
+func (w *WebSocketClientAdapter) SubscribeFills(symbol string, productType string, handler ws.OnReceive) {
+	w.BaseWsClient.SubscribeFills(symbol, productType, handler)
 }
 
 func (w *WebSocketClientAdapter) SubscribePositions(productType string, handler ws.OnReceive) {
 	w.BaseWsClient.SubscribePositions(productType, handler)
 }
 
-func (w *WebSocketClientAdapter) SubscribeAccount(productType string, handler ws.OnReceive) {
-	w.BaseWsClient.SubscribeAccount(productType, handler)
+func (w *WebSocketClientAdapter) SubscribeAccount(coin string, productType string, handler ws.OnReceive) {
+	w.BaseWsClient.SubscribeAccount(coin, productType, handler)
 }
 
 // Utility methods
@@ -152,19 +152,19 @@ func (w *WebSocketClientAdapter) GetSubscriptionCount() int {
 
 // WebSocketManager handles WebSocket connections for futures trading
 type WebSocketManager struct {
-	client       *Client
-	wsClient     WebSocketClientInterface
-	logger       zerolog.Logger
-	isPrivate    bool
-	isConnected  bool
-	isLoggedIn   bool
+	client        *Client
+	wsClient      WebSocketClientInterface
+	logger        zerolog.Logger
+	isPrivate     bool
+	isConnected   bool
+	isLoggedIn    bool
 	autoReconnect bool
 }
 
 // NewWebSocketManager creates a new WebSocket manager for the futures client
 func (c *Client) NewWebSocketManager() *WebSocketManager {
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
-	
+
 	return &WebSocketManager{
 		client:        c,
 		logger:        logger,
@@ -175,24 +175,24 @@ func (c *Client) NewWebSocketManager() *WebSocketManager {
 // ConnectPublic connects to public WebSocket channels for market data
 func (wm *WebSocketManager) ConnectPublic() error {
 	wm.logger.Info().Msg("Connecting to Bitget public WebSocket...")
-	
+
 	baseClient := ws.NewBitgetBaseWsClient(
 		wm.logger,
 		"wss://ws.bitget.com/v2/ws/public",
 		"",
 	)
 	wm.wsClient = &WebSocketClientAdapter{BaseWsClient: baseClient}
-	
+
 	wm.wsClient.SetListener(wm.defaultMessageHandler, wm.errorHandler)
 	wm.wsClient.Connect()
 	wm.wsClient.ConnectWebSocket()
 	wm.wsClient.StartReadLoop()
-	
+
 	// Wait for connection
 	timeout := time.After(5 * time.Second)
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-timeout:
@@ -211,24 +211,24 @@ func (wm *WebSocketManager) ConnectPublic() error {
 // ConnectPrivate connects to private WebSocket channels for account updates
 func (wm *WebSocketManager) ConnectPrivate(apiKey, passphrase string) error {
 	wm.logger.Info().Msg("Connecting to Bitget private WebSocket...")
-	
+
 	baseClient := ws.NewBitgetBaseWsClient(
 		wm.logger,
 		"wss://ws.bitget.com/v2/ws/private",
 		wm.client.secretKey,
 	)
 	wm.wsClient = &WebSocketClientAdapter{BaseWsClient: baseClient}
-	
+
 	wm.wsClient.SetListener(wm.defaultMessageHandler, wm.errorHandler)
 	wm.wsClient.Connect()
 	wm.wsClient.ConnectWebSocket()
 	wm.wsClient.StartReadLoop()
-	
+
 	// Wait for connection
 	timeout := time.After(5 * time.Second)
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-timeout:
@@ -237,15 +237,15 @@ func (wm *WebSocketManager) ConnectPrivate(apiKey, passphrase string) error {
 			if wm.wsClient.IsConnected() {
 				wm.isConnected = true
 				wm.isPrivate = true
-				
+
 				// Authenticate for private channels
 				wm.wsClient.Login(apiKey, passphrase, common.SHA256)
-				
+
 				// Wait for login
 				loginTimeout := time.After(3 * time.Second)
 				loginTicker := time.NewTicker(100 * time.Millisecond)
 				defer loginTicker.Stop()
-				
+
 				for {
 					select {
 					case <-loginTimeout:
@@ -270,7 +270,7 @@ func (wm *WebSocketManager) SubscribeToTicker(symbol string, handler ws.OnReceiv
 	if !wm.isConnected {
 		return fmt.Errorf("WebSocket not connected")
 	}
-	
+
 	wm.wsClient.SubscribeTicker(symbol, string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Str("symbol", symbol).Msg("Subscribed to ticker updates")
 	return nil
@@ -281,7 +281,7 @@ func (wm *WebSocketManager) SubscribeToCandlesticks(symbol, timeframe string, ha
 	if !wm.isConnected {
 		return fmt.Errorf("WebSocket not connected")
 	}
-	
+
 	wm.wsClient.SubscribeCandles(symbol, string(ProductTypeUSDTFutures), timeframe, handler)
 	wm.logger.Info().Str("symbol", symbol).Str("timeframe", timeframe).Msg("Subscribed to candlestick updates")
 	return nil
@@ -292,7 +292,7 @@ func (wm *WebSocketManager) SubscribeToOrderBook(symbol string, levels int, hand
 	if !wm.isConnected {
 		return fmt.Errorf("WebSocket not connected")
 	}
-	
+
 	switch levels {
 	case 5:
 		wm.wsClient.SubscribeOrderBook5(symbol, string(ProductTypeUSDTFutures), handler)
@@ -301,7 +301,7 @@ func (wm *WebSocketManager) SubscribeToOrderBook(symbol string, levels int, hand
 	default:
 		wm.wsClient.SubscribeOrderBook(symbol, string(ProductTypeUSDTFutures), handler)
 	}
-	
+
 	wm.logger.Info().Str("symbol", symbol).Int("levels", levels).Msg("Subscribed to order book updates")
 	return nil
 }
@@ -311,7 +311,7 @@ func (wm *WebSocketManager) SubscribeToTrades(symbol string, handler ws.OnReceiv
 	if !wm.isConnected {
 		return fmt.Errorf("WebSocket not connected")
 	}
-	
+
 	wm.wsClient.SubscribeTrades(symbol, string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Str("symbol", symbol).Msg("Subscribed to trade updates")
 	return nil
@@ -322,7 +322,7 @@ func (wm *WebSocketManager) SubscribeToMarkPrice(symbol string, handler ws.OnRec
 	if !wm.isConnected {
 		return fmt.Errorf("WebSocket not connected")
 	}
-	
+
 	wm.wsClient.SubscribeMarkPrice(symbol, string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Str("symbol", symbol).Msg("Subscribed to mark price updates")
 	return nil
@@ -333,7 +333,7 @@ func (wm *WebSocketManager) SubscribeToFunding(symbol string, handler ws.OnRecei
 	if !wm.isConnected {
 		return fmt.Errorf("WebSocket not connected")
 	}
-	
+
 	wm.wsClient.SubscribeFundingTime(symbol, string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Str("symbol", symbol).Msg("Subscribed to funding updates")
 	return nil
@@ -346,7 +346,7 @@ func (wm *WebSocketManager) SubscribeToOrders(handler ws.OnReceive) error {
 	if !wm.isPrivate || !wm.isLoggedIn {
 		return fmt.Errorf("private WebSocket not authenticated")
 	}
-	
+
 	wm.wsClient.SubscribeOrders(string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Msg("Subscribed to order updates")
 	return nil
@@ -357,8 +357,8 @@ func (wm *WebSocketManager) SubscribeToFills(handler ws.OnReceive) error {
 	if !wm.isPrivate || !wm.isLoggedIn {
 		return fmt.Errorf("private WebSocket not authenticated")
 	}
-	
-	wm.wsClient.SubscribeFills(string(ProductTypeUSDTFutures), handler)
+
+	wm.wsClient.SubscribeFills("default", string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Msg("Subscribed to fill updates")
 	return nil
 }
@@ -368,7 +368,7 @@ func (wm *WebSocketManager) SubscribeToPositions(handler ws.OnReceive) error {
 	if !wm.isPrivate || !wm.isLoggedIn {
 		return fmt.Errorf("private WebSocket not authenticated")
 	}
-	
+
 	wm.wsClient.SubscribePositions(string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Msg("Subscribed to position updates")
 	return nil
@@ -379,8 +379,8 @@ func (wm *WebSocketManager) SubscribeToAccount(handler ws.OnReceive) error {
 	if !wm.isPrivate || !wm.isLoggedIn {
 		return fmt.Errorf("private WebSocket not authenticated")
 	}
-	
-	wm.wsClient.SubscribeAccount(string(ProductTypeUSDTFutures), handler)
+
+	wm.wsClient.SubscribeAccount("default", string(ProductTypeUSDTFutures), handler)
 	wm.logger.Info().Msg("Subscribed to account updates")
 	return nil
 }
@@ -457,33 +457,33 @@ func (wm *WebSocketManager) CreateMarketDataStream(ctx context.Context, symbols 
 	if err := wm.ConnectPublic(); err != nil {
 		return fmt.Errorf("failed to connect to public WebSocket: %w", err)
 	}
-	
+
 	for _, symbol := range symbols {
 		if config.EnableTicker {
 			wm.SubscribeToTicker(symbol, config.TickerHandler)
 		}
-		
+
 		if config.EnableCandles {
 			wm.SubscribeToCandlesticks(symbol, config.CandleTimeframe, config.CandleHandler)
 		}
-		
+
 		if config.EnableOrderBook {
 			wm.SubscribeToOrderBook(symbol, config.OrderBookLevels, config.OrderBookHandler)
 		}
-		
+
 		if config.EnableTrades {
 			wm.SubscribeToTrades(symbol, config.TradeHandler)
 		}
-		
+
 		if config.EnableMarkPrice {
 			wm.SubscribeToMarkPrice(symbol, config.MarkPriceHandler)
 		}
-		
+
 		if config.EnableFunding {
 			wm.SubscribeToFunding(symbol, config.FundingHandler)
 		}
 	}
-	
+
 	wm.logger.Info().Int("symbols", len(symbols)).Int("subscriptions", wm.GetSubscriptionCount()).Msg("Market data stream created")
 	return nil
 }
@@ -493,23 +493,23 @@ func (wm *WebSocketManager) CreateTradingStream(ctx context.Context, apiKey, pas
 	if err := wm.ConnectPrivate(apiKey, passphrase); err != nil {
 		return fmt.Errorf("failed to connect to private WebSocket: %w", err)
 	}
-	
+
 	if config.EnableOrders {
 		wm.SubscribeToOrders(config.OrderHandler)
 	}
-	
+
 	if config.EnableFills {
 		wm.SubscribeToFills(config.FillHandler)
 	}
-	
+
 	if config.EnablePositions {
 		wm.SubscribeToPositions(config.PositionHandler)
 	}
-	
+
 	if config.EnableAccount {
 		wm.SubscribeToAccount(config.AccountHandler)
 	}
-	
+
 	wm.logger.Info().Int("subscriptions", wm.GetSubscriptionCount()).Msg("Trading stream created")
 	return nil
 }
@@ -518,22 +518,22 @@ func (wm *WebSocketManager) CreateTradingStream(ctx context.Context, apiKey, pas
 
 // MarketDataConfig configures market data subscriptions
 type MarketDataConfig struct {
-	EnableTicker      bool
-	EnableCandles     bool
-	EnableOrderBook   bool
-	EnableTrades      bool
-	EnableMarkPrice   bool
-	EnableFunding     bool
-	
-	CandleTimeframe   string
-	OrderBookLevels   int
-	
-	TickerHandler     ws.OnReceive
-	CandleHandler     ws.OnReceive
-	OrderBookHandler  ws.OnReceive
-	TradeHandler      ws.OnReceive
-	MarkPriceHandler  ws.OnReceive
-	FundingHandler    ws.OnReceive
+	EnableTicker    bool
+	EnableCandles   bool
+	EnableOrderBook bool
+	EnableTrades    bool
+	EnableMarkPrice bool
+	EnableFunding   bool
+
+	CandleTimeframe string
+	OrderBookLevels int
+
+	TickerHandler    ws.OnReceive
+	CandleHandler    ws.OnReceive
+	OrderBookHandler ws.OnReceive
+	TradeHandler     ws.OnReceive
+	MarkPriceHandler ws.OnReceive
+	FundingHandler   ws.OnReceive
 }
 
 // TradingStreamConfig configures private trading stream subscriptions
@@ -542,7 +542,7 @@ type TradingStreamConfig struct {
 	EnableFills     bool
 	EnablePositions bool
 	EnableAccount   bool
-	
+
 	OrderHandler    ws.OnReceive
 	FillHandler     ws.OnReceive
 	PositionHandler ws.OnReceive
@@ -560,10 +560,10 @@ func DefaultMarketDataConfig() MarketDataConfig {
 		EnableTrades:    false,
 		EnableMarkPrice: false,
 		EnableFunding:   false,
-		
+
 		CandleTimeframe: ws.Timeframe1m,
 		OrderBookLevels: 5,
-		
+
 		TickerHandler: func(message string) {
 			fmt.Printf("TICKER: %s\n", message)
 		},
@@ -583,7 +583,7 @@ func DefaultTradingStreamConfig() TradingStreamConfig {
 		EnableFills:     true,
 		EnablePositions: true,
 		EnableAccount:   false,
-		
+
 		OrderHandler: func(message string) {
 			fmt.Printf("ORDER: %s\n", message)
 		},

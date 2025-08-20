@@ -66,6 +66,12 @@ type Position struct {
 	// Position side: long/short
 	HoldSide futures.HoldSideType `json:"holdSide"`
 
+	// Open delegate size
+	OpenDelegateSize float64 `json:"openDelegateSize"`
+
+	// Margin size
+	MarginSize float64 `json:"marginSize"`
+
 	// Position size (positive number)
 	Size float64 `json:"size"`
 
@@ -90,6 +96,21 @@ type Position struct {
 	// Available size for closing position
 	Available float64 `json:"available"`
 
+	// Locked amount
+	Locked float64 `json:"locked"`
+
+	// Total amount
+	Total float64 `json:"total"`
+
+	// Leverage
+	Leverage float64 `json:"leverage"`
+
+	// Achieved profits
+	AchievedProfits float64 `json:"achievedProfits"`
+
+	// Average opening price
+	OpenPriceAvg float64 `json:"openPriceAvg"`
+
 	// Cross margin leverage
 	CrossedLeverage float64 `json:"crossedLeverage"`
 
@@ -107,6 +128,12 @@ type Position struct {
 
 	// Maintenance margin ratio
 	MaintenanceMarginRatio float64 `json:"maintenanceMarginRatio"`
+
+	// Liquidation price
+	LiquidationPrice float64 `json:"liquidationPrice"`
+
+	// Keep margin rate
+	KeepMarginRate float64 `json:"keepMarginRate"`
 
 	// Created timestamp
 	Ctime int64 `json:"ctime"`
@@ -128,6 +155,21 @@ type Position struct {
 
 	// Asset mode
 	AssetMode string `json:"assetMode"`
+
+	// Grant
+	Grant string `json:"grant"`
+
+	// Take profit price
+	TakeProfit string `json:"takeProfit"`
+
+	// Stop loss price
+	StopLoss string `json:"stopLoss"`
+
+	// Take profit order ID
+	TakeProfitId string `json:"takeProfitId"`
+
+	// Stop loss order ID
+	StopLossId string `json:"stopLossId"`
 }
 
 // UnmarshalJSON realization interface json.Unmarshaler for Position
@@ -255,6 +297,70 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 			p.AutoMargin = value.(string)
 		case "assetMode":
 			p.AssetMode = value.(string)
+		case "openDelegateSize":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.OpenDelegateSize = v
+		case "marginSize":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.MarginSize = v
+		case "locked":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.Locked = v
+		case "total":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.Total = v
+		case "leverage":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.Leverage = v
+		case "achievedProfits":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.AchievedProfits = v
+		case "openPriceAvg":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.OpenPriceAvg = v
+		case "liquidationPrice":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.LiquidationPrice = v
+		case "keepMarginRate":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.KeepMarginRate = v
+		case "grant":
+			p.Grant = value.(string)
+		case "takeProfit":
+			p.TakeProfit = value.(string)
+		case "stopLoss":
+			p.StopLoss = value.(string)
+		case "takeProfitId":
+			p.TakeProfitId = value.(string)
+		case "stopLossId":
+			p.StopLossId = value.(string)
 		default:
 			// Unknown fields are ignored
 		}

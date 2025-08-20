@@ -569,6 +569,7 @@ func (c *BaseWsClient) restoreSubscriptions() {
 		c.logger.Debug().
 			Str("channel", args.Channel).
 			Str("symbol", args.Symbol).
+			Str("coin", args.Coin).
 			Str("productType", args.ProductType).
 			Msg("Restoring subscription")
 
