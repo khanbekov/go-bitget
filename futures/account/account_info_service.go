@@ -134,7 +134,7 @@ func (d *Account) UnmarshalJSON(data []byte) error {
 	for key, value := range tmp {
 		switch key {
 		case "marginCoin":
-			d.MarginCoin = value.(string)
+			d.MarginCoin = common.SafeStringCast(value)
 		case "locked":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -208,9 +208,9 @@ func (d *Account) UnmarshalJSON(data []byte) error {
 			}
 			d.IsolatedShortLever = v
 		case "marginMode":
-			d.MarginMode = value.(string)
+			d.MarginMode = common.SafeStringCast(value)
 		case "posMode":
-			d.PosMode = value.(string)
+			d.PosMode = common.SafeStringCast(value)
 		case "unrealizedPL":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -236,9 +236,9 @@ func (d *Account) UnmarshalJSON(data []byte) error {
 			}
 			d.IsolatedUnrealizedPL = v
 		case "assetMode":
-			d.AssetMode = value.(string)
+			d.AssetMode = common.SafeStringCast(value)
 		case "grant":
-			d.Grant = value.(string)
+			d.Grant = common.SafeStringCast(value)
 		default:
 			// Неизвестные поля игнорируются
 		}

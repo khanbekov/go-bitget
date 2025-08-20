@@ -157,13 +157,13 @@ func (hp *HistoryPosition) UnmarshalJSON(data []byte) error {
 	for key, value := range tmp {
 		switch key {
 		case "positionId":
-			hp.PositionId = value.(string)
+			hp.PositionId = common.SafeStringCast(value)
 		case "marginCoin":
-			hp.MarginCoin = value.(string)
+			hp.MarginCoin = common.SafeStringCast(value)
 		case "symbol":
-			hp.Symbol = value.(string)
+			hp.Symbol = common.SafeStringCast(value)
 		case "holdSide":
-			hp.HoldSide = value.(string)
+			hp.HoldSide = common.SafeStringCast(value)
 		case "size":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -201,9 +201,9 @@ func (hp *HistoryPosition) UnmarshalJSON(data []byte) error {
 			}
 			hp.TotalFee = v
 		case "marginMode":
-			hp.MarginMode = value.(string)
+			hp.MarginMode = common.SafeStringCast(value)
 		case "posMode":
-			hp.PosMode = value.(string)
+			hp.PosMode = common.SafeStringCast(value)
 		case "openTime":
 			v, err := common.ConvertToInt64(value)
 			if err != nil {
@@ -217,7 +217,7 @@ func (hp *HistoryPosition) UnmarshalJSON(data []byte) error {
 			}
 			hp.CloseTime = v
 		case "assetMode":
-			hp.AssetMode = value.(string)
+			hp.AssetMode = common.SafeStringCast(value)
 		default:
 			// Unknown fields are ignored
 		}

@@ -31,30 +31,30 @@ func TestAllPositionsService_Do_Success(t *testing.T) {
 	// Mock response data
 	mockPositionData := []map[string]interface{}{
 		{
-			"marginCoin":      "USDT",
-			"symbol":          "BTCUSDT",
-			"holdSide":        "long",
-			"size":            "0.001",
-			"markPrice":       "50000.00",
-			"positionValue":   "50.00",
-			"averageOpenPrice": "49000.00",
-			"unrealizedPL":    "1.00",
-			"unrealizedPLR":   "0.02",
-			"margin":          "25.00",
-			"available":       "0.001",
-			"crossedLeverage": "2.0",
-			"isolatedLeverage": "0.0",
-			"marginMode":      "cross",
-			"posMode":         "one_way_mode",
-			"marginRatio":     "0.05",
+			"marginCoin":             "USDT",
+			"symbol":                 "BTCUSDT",
+			"holdSide":               "long",
+			"size":                   "0.001",
+			"markPrice":              "50000.00",
+			"positionValue":          "50.00",
+			"averageOpenPrice":       "49000.00",
+			"unrealizedPL":           "1.00",
+			"unrealizedPLR":          "0.02",
+			"margin":                 "25.00",
+			"available":              "0.001",
+			"crossedLeverage":        "2.0",
+			"isolatedLeverage":       "0.0",
+			"marginMode":             "cross",
+			"posMode":                "one_way_mode",
+			"marginRatio":            "0.05",
 			"maintenanceMarginRatio": "0.005",
-			"ctime":           "1640995200000",
-			"utime":           "1640995200000",
-			"breakEvenPrice":  "49500.00",
-			"totalFee":        "0.05",
-			"deductedFee":     "0.02",
-			"autoMargin":      "on",
-			"assetMode":       "single_asset",
+			"ctime":                  "1640995200000",
+			"utime":                  "1640995200000",
+			"breakEvenPrice":         "49500.00",
+			"totalFee":               "0.05",
+			"deductedFee":            "0.02",
+			"autoMargin":             "on",
+			"assetMode":              "single_asset",
 		},
 	}
 
@@ -100,7 +100,7 @@ func TestAllPositionsService_Do_Success(t *testing.T) {
 	pos := positions[0]
 	assert.Equal(t, "USDT", pos.MarginCoin)
 	assert.Equal(t, "BTCUSDT", pos.Symbol)
-	assert.Equal(t, "long", pos.HoldSide)
+	assert.Equal(t, futures.HoldSideLong, pos.HoldSide)
 	assert.Equal(t, 0.001, pos.Size)
 	assert.Equal(t, 50000.0, pos.MarkPrice)
 
