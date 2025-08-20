@@ -7,7 +7,8 @@ import (
 	"golang.org/x/net/context"
 	"net/url"
 	"strconv"
-	
+
+	"github.com/khanbekov/go-bitget/common"
 	"github.com/khanbekov/go-bitget/futures"
 )
 
@@ -157,17 +158,17 @@ func (c *Candlestick) UnmarshalJSON(data []byte) error {
 		}
 		switch i {
 		case 1:
-			c.Open = val.(float64)
+			c.Open = common.SafeFloat64Cast(val)
 		case 2:
-			c.High = val.(float64)
+			c.High = common.SafeFloat64Cast(val)
 		case 3:
-			c.Low = val.(float64)
+			c.Low = common.SafeFloat64Cast(val)
 		case 4:
-			c.Close = val.(float64)
+			c.Close = common.SafeFloat64Cast(val)
 		case 5:
-			c.Volume = val.(float64)
+			c.Volume = common.SafeFloat64Cast(val)
 		case 6:
-			c.QuoteAssetVolume = val.(float64)
+			c.QuoteAssetVolume = common.SafeFloat64Cast(val)
 		}
 	}
 

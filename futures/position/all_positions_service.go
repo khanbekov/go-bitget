@@ -182,11 +182,11 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 	for key, value := range tmp {
 		switch key {
 		case "marginCoin":
-			p.MarginCoin = value.(string)
+			p.MarginCoin = common.SafeStringCast(value)
 		case "symbol":
-			p.Symbol = value.(string)
+			p.Symbol = common.SafeStringCast(value)
 		case "holdSide":
-			p.HoldSide = futures.HoldSideType(value.(string))
+			p.HoldSide = futures.HoldSideType(common.SafeStringCast(value))
 		case "size":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -248,9 +248,9 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 			}
 			p.IsolatedLeverage = v
 		case "marginMode":
-			p.MarginMode = value.(string)
+			p.MarginMode = common.SafeStringCast(value)
 		case "posMode":
-			p.PosMode = value.(string)
+			p.PosMode = common.SafeStringCast(value)
 		case "marginRatio":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -294,9 +294,9 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 			}
 			p.DeductedFee = v
 		case "autoMargin":
-			p.AutoMargin = value.(string)
+			p.AutoMargin = common.SafeStringCast(value)
 		case "assetMode":
-			p.AssetMode = value.(string)
+			p.AssetMode = common.SafeStringCast(value)
 		case "openDelegateSize":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -352,15 +352,15 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 			}
 			p.KeepMarginRate = v
 		case "grant":
-			p.Grant = value.(string)
+			p.Grant = common.SafeStringCast(value)
 		case "takeProfit":
-			p.TakeProfit = value.(string)
+			p.TakeProfit = common.SafeStringCast(value)
 		case "stopLoss":
-			p.StopLoss = value.(string)
+			p.StopLoss = common.SafeStringCast(value)
 		case "takeProfitId":
-			p.TakeProfitId = value.(string)
+			p.TakeProfitId = common.SafeStringCast(value)
 		case "stopLossId":
-			p.StopLossId = value.(string)
+			p.StopLossId = common.SafeStringCast(value)
 		default:
 			// Unknown fields are ignored
 		}
