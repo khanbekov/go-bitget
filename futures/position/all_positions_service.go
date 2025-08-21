@@ -72,26 +72,17 @@ type Position struct {
 	// Margin size
 	MarginSize float64 `json:"marginSize"`
 
-	// Position size (positive number)
-	Size float64 `json:"size"`
-
 	// Mark price
 	MarkPrice float64 `json:"markPrice"`
 
-	// Position value in margin coin
-	PositionValue float64 `json:"positionValue"`
-
 	// Average opening price
-	AverageOpenPrice float64 `json:"averageOpenPrice"`
+	AverageOpenPrice float64 `json:"openPriceAvg"`
 
 	// Unrealized profit and loss
 	UnrealizedPL float64 `json:"unrealizedPL"`
 
 	// Unrealized profit and loss rate
-	UnrealizedPLR float64 `json:"unrealizedPLR"`
-
-	// Position margin
-	Margin float64 `json:"margin"`
+	UnrealizedPLR float64 `json:"unrealizedPLR,omitempty"`
 
 	// Available size for closing position
 	Available float64 `json:"available"`
@@ -107,9 +98,6 @@ type Position struct {
 
 	// Achieved profits
 	AchievedProfits float64 `json:"achievedProfits"`
-
-	// Average opening price
-	OpenPriceAvg float64 `json:"openPriceAvg"`
 
 	// Cross margin leverage
 	CrossedLeverage float64 `json:"crossedLeverage"`
@@ -187,48 +175,18 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 			p.Symbol = common.SafeStringCast(value)
 		case "holdSide":
 			p.HoldSide = futures.HoldSideType(common.SafeStringCast(value))
-		case "size":
-			v, err := common.ConvertToFloat64(value)
-			if err != nil {
-				return err
-			}
-			p.Size = v
 		case "markPrice":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
 				return err
 			}
 			p.MarkPrice = v
-		case "positionValue":
-			v, err := common.ConvertToFloat64(value)
-			if err != nil {
-				return err
-			}
-			p.PositionValue = v
-		case "averageOpenPrice":
-			v, err := common.ConvertToFloat64(value)
-			if err != nil {
-				return err
-			}
-			p.AverageOpenPrice = v
 		case "unrealizedPL":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
 				return err
 			}
 			p.UnrealizedPL = v
-		case "unrealizedPLR":
-			v, err := common.ConvertToFloat64(value)
-			if err != nil {
-				return err
-			}
-			p.UnrealizedPLR = v
-		case "margin":
-			v, err := common.ConvertToFloat64(value)
-			if err != nil {
-				return err
-			}
-			p.Margin = v
 		case "available":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -315,6 +273,12 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 				return err
 			}
 			p.Locked = v
+		case "frozen":
+			v, err := common.ConvertToFloat64(value)
+			if err != nil {
+				return err
+			}
+			p.Locked = v
 		case "total":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
@@ -338,7 +302,7 @@ func (p *Position) UnmarshalJSON(data []byte) error {
 			if err != nil {
 				return err
 			}
-			p.OpenPriceAvg = v
+			p.AverageOpenPrice = v
 		case "liquidationPrice":
 			v, err := common.ConvertToFloat64(value)
 			if err != nil {
