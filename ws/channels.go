@@ -185,7 +185,7 @@ func (c *BaseWsClient) SubscribeTrades(symbol, productType string, handler OnRec
 	args := SubscriptionArgs{
 		ProductType: productType,
 		Channel:     ChannelTrade,
-		Symbol:      "default",
+		Symbol:      symbol,
 	}
 
 	c.subscriptions[args] = handler
